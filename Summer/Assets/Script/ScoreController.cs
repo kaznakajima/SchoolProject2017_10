@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ScoreController : MonoBehaviour
 {
     // プレイヤーの参照
-    public GameObject Player;
+    public GameObject Camera;
 
     public Text scorelabel;
 
@@ -20,7 +20,9 @@ public class ScoreController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        scorelabel.text = ("Score : " + (int)score + "m");
+        score = GetScore();
+
+        scorelabel.text = ("Score : " + score.ToString("f2") + "m");
 	}
 
     // スコアの計算
@@ -28,6 +30,6 @@ public class ScoreController : MonoBehaviour
     {
         
         // プレイヤーのジャンプした距離を測る
-        return Player.transform.position.y + 4;
+        return Camera.transform.position.y;
     }
 }

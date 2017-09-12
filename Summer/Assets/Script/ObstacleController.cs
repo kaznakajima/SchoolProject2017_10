@@ -8,6 +8,9 @@ public class ObstacleController : MonoBehaviour
     [SerializeField]
     obstacleType obstacle;
 
+    // 障害物の警告
+    public GameObject warning;
+
     // カメラの参照
     Camera _mainCamera;
 
@@ -19,7 +22,8 @@ public class ObstacleController : MonoBehaviour
     // 障害物の種類
     public enum obstacleType
     {
-        bird,   // 鳥
+        Leftbird,   // 鳥
+        Rightbird,
         rock,   // 石
     };
 
@@ -34,10 +38,20 @@ public class ObstacleController : MonoBehaviour
     {
         switch (obstacle)
         {
-            case obstacleType.bird:
+            case obstacleType.Leftbird:
+                warning.transform.position = new Vector3(transform.position.x + 1.5f, transform.position.y, transform.position.z);
                 ObstaclePos.x = 1;
                 transform.position += ObstaclePos * speed * Time.deltaTime;
                 if(transform.position.x > getCameraRange_Right().x + 0.25f)
+                {
+                    Destroy(gameObject);
+                }
+                break;
+            case obstacleType.Rightbird:
+                warning.transform.position = new Vector3(transform.position.x - 1.5f, transform.position.y, transform.position.z);
+                ObstaclePos.x = -1;
+                transform.position += ObstaclePos * speed * Time.deltaTime;
+                if (transform.position.x < getCameraRange_Left().x - 0.25f)
                 {
                     Destroy(gameObject);
                 }

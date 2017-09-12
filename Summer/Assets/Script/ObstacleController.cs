@@ -9,7 +9,6 @@ public class ObstacleController : MonoBehaviour
     obstacleType obstacle;
 
     // カメラの参照
-    [SerializeField]
     Camera _mainCamera;
 
     // 障害物の座標
@@ -17,10 +16,11 @@ public class ObstacleController : MonoBehaviour
     // 障害物のスピード
     public float speed;
 
+    // 障害物の種類
     public enum obstacleType
     {
-        bird,
-        rock,
+        bird,   // 鳥
+        rock,   // 石
     };
 
 	// Use this for initialization
@@ -47,21 +47,21 @@ public class ObstacleController : MonoBehaviour
 
     private Vector3 getCameraRange_Left()
     {
+        _mainCamera = Camera.main;
         Vector3 LeftRange = _mainCamera.ScreenToWorldPoint(Vector3.zero);
         // 上下反転させる
         LeftRange.Scale(new Vector3(1f, -1f, 1f));
         LeftRange.z = 0;
-        Debug.Log(LeftRange);
         return LeftRange;
     }
 
     private Vector3 getCameraRange_Right()
     {
+        _mainCamera = Camera.main;
         Vector3 RightRange = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height,0.0f));
         // 上下反転させる
         RightRange.Scale(new Vector3(1f, -1f, 1f));
         RightRange.z = 0;
-        Debug.Log(RightRange);
         return RightRange;
     }
 }

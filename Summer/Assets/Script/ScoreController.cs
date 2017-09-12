@@ -10,23 +10,23 @@ public class ScoreController : MonoBehaviour
 
     public Text scorelabel;
 
-	// Use this for initialization
-	void Start () {
+    public float score;
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        // スコア
-        float score = GetScore();
-
-        scorelabel.text = ("Score : " + score + "m");
+        scorelabel.text = ("Score : " + (int)score + "m");
 	}
 
     // スコアの計算
-    float GetScore()
+    public float GetScore()
     {
+        
         // プレイヤーのジャンプした距離を測る
         return Player.transform.position.y + 4;
     }

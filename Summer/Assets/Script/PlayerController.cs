@@ -15,7 +15,10 @@ public class PlayerController : MonoBehaviour
     const int LeftLane = -1;
     const float LaneWidth = 2.0f;
 
-    // 走る道
+    // スコアの参照
+    public ScoreController _score;
+
+    // 昇る道
     int targetLane;
 
 	// Use this for initialization
@@ -40,7 +43,7 @@ public class PlayerController : MonoBehaviour
                 MoveLeft();
             }
 
-            // 走るレーンを変更
+            // 昇るレーンを変更
             float ratioX = targetLane * LaneWidth;
 
             // 移動実行
@@ -74,6 +77,8 @@ public class PlayerController : MonoBehaviour
             gameObject.layer = 8;
 
             Destroy(c.gameObject);
+
+            _score.score = _score.GetScore();
 
             StartCoroutine(LayerChange());
         }

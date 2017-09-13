@@ -18,9 +18,16 @@ public class PlayerController : MonoBehaviour
     // 昇る道
     int targetLane;
 
+    // プレイヤーのスプライト
+    [SerializeField]
+    SpriteRenderer PlayerRen;
+    [SerializeField]
+    Sprite[] PlayerSp;
+
 	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+    {
+        
 	}
 	
 	// Update is called once per frame
@@ -33,20 +40,24 @@ public class PlayerController : MonoBehaviour
 
             if (ScreenPos.x > transform.position.x)
             {
+                //Playeranim.SetTrigger("JumpRight");
+                PlayerRen.sprite = PlayerSp[2];
                 MoveRight();
             }
             if (ScreenPos.x < transform.position.x)
             {
+                //Playeranim.SetTrigger("JumpLeft");
+                PlayerRen.sprite = PlayerSp[3];
                 MoveLeft();
             }
-
-            // 昇るレーンを変更
-            float ratioX = targetLane * LaneWidth;
-
-            // 移動実行
-            movePos = new Vector3(ratioX, transform.position.y, transform.position.z);
-            transform.position = Vector3.Lerp(transform.position, movePos, 1.0f);
         }
+
+        // 昇るレーンを変更
+        float ratioX = targetLane * LaneWidth;
+
+        // 移動実行
+        movePos = new Vector3(ratioX, transform.position.y, transform.position.z);
+        transform.position = Vector3.Lerp(transform.position, movePos, 2.0f * Time.deltaTime);
     }
 
     void MoveRight()
@@ -69,6 +80,10 @@ public class PlayerController : MonoBehaviour
     {
         if(c.gameObject.tag == "Block")
         {
+            PlayerRen.sprite = PlayerSp[1];
+
+            //Playeranim.SetTrigger("JumpNomal");
+
             PlayerRig.velocity = transform.up * 7.0f;
 
             gameObject.layer = 8;
@@ -82,6 +97,8 @@ public class PlayerController : MonoBehaviour
     IEnumerator LayerChange()
     {
         yield return new WaitForSeconds(0.5f);
+
+        PlayerRen.sprite = PlayerSp[0];
 
         gameObject.layer = 0;
     }

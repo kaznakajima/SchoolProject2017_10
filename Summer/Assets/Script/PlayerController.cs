@@ -50,13 +50,11 @@ public class PlayerController : MonoBehaviour
             // 離した位置がタップ開始位置より右の場合
             if(TouchEnd > TouchStart)
             {
-                PlayerRen.sprite = PlayerSp[2];
                 MoveRight();
             }
             // 離した位置がタップ開始位置よりも左の場合
             if(TouchEnd < TouchStart)
             {
-                PlayerRen.sprite = PlayerSp[3];
                 MoveLeft();
             }
         }
@@ -73,6 +71,7 @@ public class PlayerController : MonoBehaviour
     {
         if(targetLane < RightLane)
         {
+            PlayerRen.sprite = PlayerSp[2];
             targetLane++;
         }
     }
@@ -81,6 +80,7 @@ public class PlayerController : MonoBehaviour
     {
         if(targetLane > LeftLane)
         {
+            PlayerRen.sprite = PlayerSp[3];
             targetLane--;
         }
     }
@@ -105,11 +105,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator LayerChange()
     {
-<<<<<<< HEAD
-        yield return new WaitForSeconds(0.75f);
-=======
         yield return new WaitForSeconds(0.7f);
->>>>>>> Nakajima
 
         PlayerRen.sprite = PlayerSp[0];
 

@@ -28,6 +28,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     Sprite[] PlayerSp;
 
+    // 左右移動判定
+    bool LaneMove;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -50,13 +53,11 @@ public class PlayerController : MonoBehaviour
             // 離した位置がタップ開始位置より右の場合
             if(TouchEnd > TouchStart)
             {
-                PlayerRen.sprite = PlayerSp[2];
                 MoveRight();
             }
             // 離した位置がタップ開始位置よりも左の場合
             if(TouchEnd < TouchStart)
             {
-                PlayerRen.sprite = PlayerSp[3];
                 MoveLeft();
             }
         }
@@ -73,7 +74,9 @@ public class PlayerController : MonoBehaviour
     {
         if(targetLane < RightLane)
         {
+            PlayerRen.sprite = PlayerSp[2];
             targetLane++;
+            LaneMove = true;
         }
     }
 
@@ -81,7 +84,9 @@ public class PlayerController : MonoBehaviour
     {
         if(targetLane > LeftLane)
         {
+            PlayerRen.sprite = PlayerSp[3];
             targetLane--;
+            LaneMove = true;
         }
     }
 
@@ -90,6 +95,8 @@ public class PlayerController : MonoBehaviour
         if(c.gameObject.tag == "Block")
         {
             PlayerRen.sprite = PlayerSp[1];
+
+            LaneMove = false;
 
             //Playeranim.SetTrigger("JumpNomal");
 
@@ -105,10 +112,14 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator LayerChange()
     {
+
         yield return new WaitForSeconds(0.7f);
 
-        PlayerRen.sprite = PlayerSp[0];
-
         gameObject.layer = 0;
+
+        if (LaneMove) { yield break; }
+
+        PlayerRen.sprite = PlayerSp[0];
+        
     }
 }

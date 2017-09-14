@@ -10,6 +10,10 @@ public class PlayerController : MonoBehaviour
     // 移動先の位置
     Vector3 movePos;
 
+    // タッチ判定
+    float TouchStart; // タッチを開始した座標
+    float TouchEnd;   // 指を放した座標
+
     // プレイヤーが通る道
     const int RightLane = 1;
     const int LeftLane = -1;
@@ -33,20 +37,25 @@ public class PlayerController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        // マウスクリックまたはタップを開始したとき
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 mousePos = Input.mousePosition;
-            Vector3 ScreenPos = Camera.main.ScreenToWorldPoint(mousePos);
-
-            if (ScreenPos.x > transform.position.x)
+            TouchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
+        }
+        // マウス、タップを離したとき
+        if (Input.GetMouseButtonUp(0))
+        {
+            TouchEnd = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
+            
+            // 離した位置がタップ開始位置より右の場合
+            if(TouchEnd > TouchStart)
             {
-                //Playeranim.SetTrigger("JumpRight");
                 PlayerRen.sprite = PlayerSp[2];
                 MoveRight();
             }
-            if (ScreenPos.x < transform.position.x)
+            // 離した位置がタップ開始位置よりも左の場合
+            if(TouchEnd < TouchStart)
             {
-                //Playeranim.SetTrigger("JumpLeft");
                 PlayerRen.sprite = PlayerSp[3];
                 MoveLeft();
             }
@@ -57,7 +66,7 @@ public class PlayerController : MonoBehaviour
 
         // 移動実行
         movePos = new Vector3(ratioX, transform.position.y, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, movePos, 2.0f * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, movePos, 3.0f * Time.deltaTime);
     }
 
     void MoveRight()
@@ -96,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator LayerChange()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.7f);
 
         PlayerRen.sprite = PlayerSp[0];
 

@@ -15,6 +15,10 @@ public class StageManager : MonoBehaviour
     public int preInstantiate;
     public List<GameObject> generatedStageList = new List<GameObject>();
 
+    // 障害物
+    [SerializeField]
+    GameObject[] ObstacleObj;
+
     // Use this for initialization
     void Start()
     {

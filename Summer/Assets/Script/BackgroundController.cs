@@ -11,17 +11,19 @@ public class BackgroundController : MonoBehaviour
     public Sprite[] backgrounds;
 
     // スコアの参照
-    ScoreController _score;
+    Camera _mainCamera;
 
 	// Use this for initialization
 	void Start ()
     {
-        _score = GameObject.FindGameObjectWithTag("Controller").GetComponent<ScoreController>();
-        switch (_score.score)
+        _mainCamera = Camera.main;
+        if(_mainCamera.transform.position.y >= 0)
         {
-            case 0:
-                background.sprite = backgrounds[0];
-                break;
+            background.sprite = backgrounds[1];
+        }
+        if(_mainCamera.transform.position.y > 100)
+        {
+            background.sprite = backgrounds[1];
         }
 	}
 	

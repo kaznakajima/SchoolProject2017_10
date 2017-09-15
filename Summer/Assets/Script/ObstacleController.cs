@@ -8,9 +8,6 @@ public class ObstacleController : MonoBehaviour
     [SerializeField]
     obstacleType obstacle;
 
-    // 障害物の警告
-    public GameObject warning;
-
     // カメラの参照
     Camera _mainCamera;
 
@@ -19,19 +16,39 @@ public class ObstacleController : MonoBehaviour
     // 障害物のスピード
     public float speed;
 
+    // PlayerControllerの参照
+    PlayerController _playerController;
+
+    // 衝突したオブジェクトのRigidbody
+    private Rigidbody2D PlayerRig;
+    // 衝突したオブジェクトのBoxCollider2D
+    private BoxCollider2D PlayerCollision;
+    // 衝突エフェクト
+    [SerializeField]
+    SpriteRenderer ObstacleRen;
+    [SerializeField]
+    Sprite HitEffect;
+
+
     // 障害物の種類
     public enum obstacleType
     {
-        Leftbird,   // 鳥
+        // 鳥
+        Leftbird,   
         Rightbird,
-        rock,   // 石
+        // 飛行機
+        RightPlane,
+        LeftPlane
+
     };
 
 	// Use this for initialization
 	void Start ()
     {
-        
-	}
+        _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        PlayerRig = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+        PlayerCollision = GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>();
+    }
 
 	// Update is called once per frame
 	void Update ()
@@ -39,7 +56,6 @@ public class ObstacleController : MonoBehaviour
         switch (obstacle)
         {
             case obstacleType.Leftbird:
-                warning.transform.position = new Vector3(transform.position.x + 1.5f, transform.position.y, transform.position.z);
                 ObstaclePos.x = 1;
                 transform.position += ObstaclePos * speed * Time.deltaTime;
                 if(transform.position.x > getCameraRange_Right().x + 0.25f)
@@ -48,7 +64,6 @@ public class ObstacleController : MonoBehaviour
                 }
                 break;
             case obstacleType.Rightbird:
-                warning.transform.position = new Vector3(transform.position.x - 1.5f, transform.position.y, transform.position.z);
                 ObstaclePos.x = -1;
                 transform.position += ObstaclePos * speed * Time.deltaTime;
                 if (transform.position.x < getCameraRange_Left().x - 0.25f)
@@ -56,6 +71,60 @@ public class ObstacleController : MonoBehaviour
                     Destroy(gameObject);
                 }
                 break;
+            case obstacleType.LeftPlane:
+                transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
+                ObstaclePos.x = 2;
+                transform.position += ObstaclePos * speed * Time.deltaTime;
+                if (transform.position.x > getCameraRange_Right().x + 1.0f)
+                {
+                    Destroy(gameObject);
+                }
+                break;
+            case obstacleType.RightPlane:
+                ObstaclePos.x = -2;
+                transform.position += ObstaclePos * speed * Time.deltaTime;
+                if (transform.position.x < getCameraRange_Left().x - 1.0f)
+                {
+                    Destroy(gameObject);
+                }
+                break;
+        }
+    }
+
+    // 障害物にぶつかった時の処理
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "GameController")
+        {
+            //// 衝突した地点の座標を取得
+            //foreach (ContactPoint2D contact in collision.contacts)
+            //{
+            //    point = contact.point;
+            //    Debug.Log(point);
+            //}
+
+            _playerController.ObstacleHit();
+            ObstacleRen.sprite = HitEffect;
+            speed = 0;
+            Destroy(gameObject, 0.25f);
+
+            HitAction();
+        }
+    }
+
+    void HitAction()
+    {
+        if (ObstaclePos.x > 0)
+        {
+            PlayerRig.simulated = true;
+            PlayerRig.velocity = transform.right * 15.0f;
+            PlayerCollision.enabled = false;
+        }
+        if (ObstaclePos.x < 0)
+        {
+            PlayerRig.simulated = true;
+            PlayerRig.velocity = -transform.right * 15.0f;
+            PlayerCollision.enabled = false;
         }
     }
 

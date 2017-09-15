@@ -30,11 +30,13 @@ public class PlayerController : MonoBehaviour
 
     // 左右移動判定
     bool LaneMove;
+    // 衝突判定
+    bool hit;
 
 	// Use this for initialization
 	void Start ()
     {
-        
+        hit = false;
 	}
 	
 	// Update is called once per frame
@@ -66,8 +68,11 @@ public class PlayerController : MonoBehaviour
         float ratioX = targetLane * LaneWidth;
 
         // 移動実行
-        movePos = new Vector3(ratioX, transform.position.y, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, movePos, 3.0f * Time.deltaTime);
+        if (!hit)
+        {
+            movePos = new Vector3(ratioX, transform.position.y, transform.position.z);
+            transform.position = Vector3.Lerp(transform.position, movePos, 3.0f * Time.deltaTime);
+        }
     }
 
     void MoveRight()
@@ -88,6 +93,13 @@ public class PlayerController : MonoBehaviour
             targetLane--;
             LaneMove = true;
         }
+    }
+
+    //障害物に当たったときの処理
+    public void ObstacleHit()
+    {
+        hit = true;
+        PlayerRen.sprite = PlayerSp[0];
     }
 
     void OnCollisionEnter2D(Collision2D c)

@@ -5,11 +5,25 @@ using UnityEngine;
 public class StageController : MonoBehaviour
 {
     // ステージの足場
-    public GameObject Prefab;
+    private GameObject Prefab;
+    public GameObject[] StagePrefab;
+
+    // Cameraの参照
+    Camera _mainCamera;
 
 	// Use this for initialization
 	void Start ()
     {
+        _mainCamera = Camera.main;
+        if(_mainCamera.transform.position.y >= 0)
+        {
+            Prefab = StagePrefab[0];
+        }
+        if(_mainCamera.transform.position.y >= 90)
+        {
+            Prefab = StagePrefab[1];
+        }
+
         // プレファブを同ポジションに生成
         GameObject StageChip = (GameObject)Instantiate(
             Prefab,

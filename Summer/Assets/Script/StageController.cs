@@ -19,7 +19,7 @@ public class StageController : MonoBehaviour
         {
             Prefab = StagePrefab[0];
         }
-        if(_mainCamera.transform.position.y >= 90)
+        if(_mainCamera.transform.position.y >= 490)
         {
             Prefab = StagePrefab[1];
         }

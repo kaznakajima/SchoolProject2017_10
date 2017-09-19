@@ -36,8 +36,18 @@ public class PlayerController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        PlayerRig.simulated = false;
+        StartCoroutine(GameStart());
         hit = false;
 	}
+
+    // 三秒たったらゲームスタート
+    IEnumerator GameStart()
+    {
+        yield return new WaitForSeconds(3.5f);
+
+        PlayerRig.simulated = true;
+    }
 	
 	// Update is called once per frame
 	void Update ()

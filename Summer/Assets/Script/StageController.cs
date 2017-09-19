@@ -15,6 +15,7 @@ public class StageController : MonoBehaviour
 	void Start ()
     {
         _mainCamera = Camera.main;
+        // 足場の変更
         if(_mainCamera.transform.position.y >= 0)
         {
             Prefab = StagePrefab[0];

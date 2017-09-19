@@ -130,6 +130,20 @@ public class PlayerController : MonoBehaviour
 
             StartCoroutine(LayerChange());
         }
+        if(c.gameObject.tag == "Obstacle")
+        {
+            PlayerRen.sprite = PlayerSp[1];
+
+            LaneMove = false;
+
+            //Playeranim.SetTrigger("JumpNomal");
+
+            PlayerRig.velocity = transform.up * 7.0f;
+
+            gameObject.layer = 8;
+
+            StartCoroutine(LayerChange());
+        }
     }
 
     IEnumerator LayerChange()

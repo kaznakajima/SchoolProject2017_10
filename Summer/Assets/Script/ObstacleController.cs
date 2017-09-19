@@ -45,6 +45,14 @@ public class ObstacleController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        // 初期位置
+        switch (obstacle)
+        {
+            case obstacleType.Leftbird:
+
+                break;
+        };
+
         _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         PlayerRig = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
         PlayerCollision = GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>();

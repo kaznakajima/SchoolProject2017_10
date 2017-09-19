@@ -29,11 +29,11 @@ public class CameraController : MonoBehaviour
 	void LateUpdate ()
     {
         Vector3 newPosition = _Camera.transform.position;
-        // カメラ移動
-        if (_Player.transform.position.y >= _Camera.transform.position.y)
-        {
+
+        if (_Player.transform.position.y > newPosition.y)
+            // カメラ移動
             newPosition.y = _Player.transform.position.y + offset.y;
-        }
+
         _Camera.transform.position = Vector3.Lerp(_Camera.transform.position, newPosition, 10.0f * Time.deltaTime);
 	}
 }

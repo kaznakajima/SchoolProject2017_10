@@ -6,15 +6,9 @@ public class PlayerController : MonoBehaviour
 {
     // プレイヤーのRigidbody
     public Rigidbody2D PlayerRig;
-    // 衝突したオブジェクトのBoxCollider2D
-    public CapsuleCollider2D PlayerCollision;
 
     // 移動先の位置
     Vector3 movePos;
-    // 接触した部分
-    Vector3 point;
-    // ObstacleControllerの参照
-    ObstacleController _obstacleController;
 
     // タッチ判定
     float TouchStart; // タッチを開始した座標
@@ -42,23 +36,8 @@ public class PlayerController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        LaneMove = true;
-        PlayerRig.simulated = false;
-        StartCoroutine(GameStart());
-        hit = true;
-	}
-
-    // 三秒たったらゲームスタート
-    IEnumerator GameStart()
-    {
-        yield return new WaitForSeconds(3.5f);
-
         hit = false;
-
-        LaneMove = false;
-
-        PlayerRig.simulated = true;
-    }
+	}
 	
 	// Update is called once per frame
 	void Update ()
@@ -98,8 +77,7 @@ public class PlayerController : MonoBehaviour
 
     void MoveRight()
     {
-
-        if (targetLane < RightLane)
+        if(targetLane < RightLane)
         {
             PlayerRen.sprite = PlayerSp[2];
             targetLane++;
@@ -109,101 +87,38 @@ public class PlayerController : MonoBehaviour
 
     void MoveLeft()
     {
-        if (targetLane > LeftLane)
+        if(targetLane > LeftLane)
         {
             PlayerRen.sprite = PlayerSp[3];
             targetLane--;
             LaneMove = true;
         }
-        
     }
 
     //障害物に当たったときの処理
     public void ObstacleHit()
     {
         hit = true;
-        PlayerRen.sprite = PlayerSp[4];
-        _obstacleController.HitAction();
-
-        if (point.x > transform.position.x)
-        {
-            PlayerRig.simulated = true;
-            PlayerRig.velocity = transform.right * 12.0f;
-            PlayerCollision.enabled = false;
-        }
-        if (point.x < transform.position.x)
-        {
-            PlayerRig.simulated = true;
-            PlayerRig.velocity = -transform.right * 12.0f;
-            PlayerCollision.enabled = false;
-        }
-        if (point.y > transform.position.y)
-        {
-            PlayerRig.simulated = true;
-            PlayerRig.velocity = -transform.up * 12.0f;
-            PlayerCollision.enabled = false;
-        }
+        PlayerRen.sprite = PlayerSp[0];
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D c)
     {
-        if(collision.gameObject.tag == "Block")
+        if(c.gameObject.tag == "Block")
         {
-            // 衝突した地点の座標を取得
-            foreach (ContactPoint2D contact in collision.contacts)
-            {
-                point = contact.point;
-            }
+            PlayerRen.sprite = PlayerSp[1];
 
-            if (point.y < transform.position.y - 0.7f)
-            {
-                PlayerRen.sprite = PlayerSp[1];
+            LaneMove = false;
 
-                LaneMove = false;
+            //Playeranim.SetTrigger("JumpNomal");
 
-                //Playeranim.SetTrigger("JumpNomal");
+            PlayerRig.velocity = transform.up * 7.0f;
 
-                PlayerRig.velocity = transform.up * 7.0f;
+            gameObject.layer = 8;
 
-                gameObject.layer = 8;
+            Destroy(c.gameObject);
 
-                Destroy(collision.gameObject);
-
-                StartCoroutine(LayerChange());
-            }
-            else
-                return;
-
-            
-        }
-        if(collision.gameObject.tag == "Obstacle")
-        {
-            // 接触した障害物のスクリプトを参照する
-            _obstacleController = collision.gameObject.GetComponent<ObstacleController>();
-
-            // 衝突した地点の座標を取得
-            foreach (ContactPoint2D contact in collision.contacts)
-            {
-                point = contact.point;
-            }
-            if (point.y < transform.position.y - 0.7f)
-            {
-                PlayerRen.sprite = PlayerSp[1];
-
-                LaneMove = false;
-
-                //Playeranim.SetTrigger("JumpNomal");
-
-                PlayerRig.velocity = transform.up * 10.0f;
-
-                gameObject.layer = 8;
-
-                StartCoroutine(LayerChange());
-            }
-            else
-            {
-                ObstacleHit();
-            }
+            StartCoroutine(LayerChange());
         }
     }
 

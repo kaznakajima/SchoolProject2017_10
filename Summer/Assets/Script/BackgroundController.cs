@@ -10,7 +10,7 @@ public class BackgroundController : MonoBehaviour
     // 背景画像の配列
     public Sprite[] backgrounds;
 
-    // カメラの位置
+    // スコアの参照
     Camera _mainCamera;
 
 	// Use this for initialization
@@ -21,21 +21,9 @@ public class BackgroundController : MonoBehaviour
         {
             background.sprite = backgrounds[1];
         }
-        if(_mainCamera.transform.position.y >= 90)
-        {
-            background.sprite = backgrounds[2];
-        }
         if(_mainCamera.transform.position.y > 100)
         {
-            background.sprite = backgrounds[3];
-        }
-        if(_mainCamera.transform.position.y >= 490)
-        {
-            background.sprite = backgrounds[4];
-        }
-        if(_mainCamera.transform.position.y > 500)
-        {
-            background.sprite = backgrounds[5];
+            background.sprite = backgrounds[1];
         }
 	}
 	

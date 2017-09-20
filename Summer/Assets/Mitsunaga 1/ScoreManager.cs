@@ -74,6 +74,6 @@ public class ScoreManager : MonoBehaviour {
     public float GetScore()
     {
         // プレイヤーのジャンプした距離を測る
-        return Camera.transform.position.y * 1000;
+        return Camera.transform.position.y * 100;
     }
 }

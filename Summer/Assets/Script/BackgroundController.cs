@@ -19,11 +19,15 @@ public class BackgroundController : MonoBehaviour
         _mainCamera = Camera.main;
         if(_mainCamera.transform.position.y >= 0)
         {
+            background.sprite = backgrounds[0];
+        }
+        if(_mainCamera.transform.position.y >= 90)
+        {
             background.sprite = backgrounds[1];
         }
         if(_mainCamera.transform.position.y > 100)
         {
-            background.sprite = backgrounds[1];
+            background.sprite = backgrounds[2];
         }
 	}
 	

@@ -112,12 +112,6 @@ public class ObstacleController : MonoBehaviour
         }
     }
 
-    // 障害物にぶつかった時の処理
-    void PlayerHit()
-    {
-
-    }
-
     public void HitAction()
     {
         ObstacleRen.sprite = HitEffect;

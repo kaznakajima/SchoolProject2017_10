@@ -21,6 +21,9 @@ public class ObstacleController : MonoBehaviour
     SpriteRenderer ObstacleRen;
     [SerializeField]
     Sprite HitEffect;
+    // アラート警告
+    [SerializeField]
+    GameObject Warning;
 
 
     // 障害物の種類
@@ -41,6 +44,16 @@ public class ObstacleController : MonoBehaviour
     void Start()
     {
         _mainCamera = Camera.main;
+
+        // 障害物の種類によって警告の表示する位置を決める
+        switch (obstacle)
+        {
+            case obstacleType.Star:
+                Warning.transform.position = new Vector3(transform.position.x, _mainCamera.transform.position.y + 4.5f, transform.position.z);
+                Instantiate(Warning);
+                break;
+        }
+        
 
         // 初期位置
         //switch (obstacle)

@@ -15,6 +15,7 @@ public class StageManager : MonoBehaviour
     public int startTipIndex;
     public int preInstantiate;
     public List<GameObject> generatedStageList = new List<GameObject>();
+    public List<GameObject> generatedObstacleList = new List<GameObject>();
 
     // Use this for initialization
     void Start()
@@ -57,6 +58,7 @@ public class StageManager : MonoBehaviour
 
             // 生成したステージチップを管理リストに追加し
             generatedStageList.Add(stageObject);
+            generatedObstacleList.Add(obstacleObject);
         }
 
         // ステージ保持上限内になるまで古いステージを削除
@@ -98,5 +100,12 @@ public class StageManager : MonoBehaviour
         GameObject oldStage = generatedStageList[0];
         generatedStageList.RemoveAt(0);
         Destroy(oldStage);
+    }
+
+    void DestroyOlderObstacle()
+    {
+        GameObject oldObstacle = generatedObstacleList[0];
+        generatedStageList.RemoveAt(0);
+        Destroy(oldObstacle);
     }
 }

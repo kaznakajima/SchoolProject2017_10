@@ -10,15 +10,19 @@ public class GameOver : MonoBehaviour
     public GameObject player;
 
     public Image gameOverImage;
-    public GameObject RetryButton;
+    public GameObject[] HakoAndButton;
 
     int addAlpha;
 
 	void Start ()
     {
         addAlpha = 2;
-        gameOverImage.color = new Color(gameOverImage.color.r, gameOverImage.color.g, gameOverImage.color.b, 0);
-        RetryButton.SetActive(false);
+        gameOverImage.color = new Color(1, 1, 1, 0);
+        for(int i = 0; i < HakoAndButton.Length; i++)
+        {
+            HakoAndButton[i].SetActive(false);
+        }
+        
     }
 
 	void Update ()
@@ -27,8 +31,19 @@ public class GameOver : MonoBehaviour
 
         if (player.transform.position.y < cameraVec.y)
         {
-            gameOverImage.color += new Color(0, 0, 0, addAlpha * Time.deltaTime);
-            RetryButton.SetActive(true);
+            if(gameOverImage.color.a < 1)
+            {
+                gameOverImage.color += new Color(0, 0, 0, addAlpha * Time.deltaTime);
+
+                if(gameOverImage.color.a > 1)
+                {
+                    gameOverImage.color = new Color(1, 1, 1, 1);
+                }
+            }
+            for (int i = 0; i < HakoAndButton.Length; i++)
+            {
+                HakoAndButton[i].SetActive(true);
+            }
         }
 	}
 

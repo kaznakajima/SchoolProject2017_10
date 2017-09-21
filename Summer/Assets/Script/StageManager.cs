@@ -11,24 +11,25 @@ public class StageManager : MonoBehaviour
 
     public Transform character;
     public GameObject[] stageTips;
+    public GameObject[] obstacleTips;
     public int startTipIndex;
     public int preInstantiate;
     public List<GameObject> generatedStageList = new List<GameObject>();
-
-    // 障害物
-    [SerializeField]
-    GameObject[] ObstacleObj;
 
     // Use this for initialization
     void Start()
     {
         currentTipIndex = startTipIndex - 1;
-        UpdateStage(preInstantiate);
+
+        //UpdateStage(preInstantiate);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (PlayerController.hit == true)
+            return;
+
         // キャラクターが存在するなら処理を行う
         if (character != null)
         {
@@ -52,6 +53,7 @@ public class StageManager : MonoBehaviour
         for (int i = currentTipIndex + 1; i <= toTipIndex; i++)
         {
             GameObject stageObject = GenerateStage(i);
+            GameObject obstacleObject = GenerateObstacle(i);
 
             // 生成したステージチップを管理リストに追加し
             generatedStageList.Add(stageObject);
@@ -73,7 +75,21 @@ public class StageManager : MonoBehaviour
             Quaternion.identity
             );
 
+
+
         return stageObject;
+    }
+
+    GameObject GenerateObstacle(int tipIndex)
+    {
+        int nextObstacleTip = Random.Range(0, obstacleTips.Length);
+
+        GameObject obstacleObject = Instantiate(
+            obstacleTips[nextObstacleTip],
+            new Vector3(0, tipIndex * StageTipSize, 0),
+            Quaternion.identity);
+
+        return obstacleObject;
     }
 
     // 1番古いステージを削除

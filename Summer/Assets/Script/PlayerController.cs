@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     // 左右移動判定
     bool LaneMove;
     // 衝突判定
-    bool hit;
+    public static bool hit;
 
     // Use this for initialization
     void Start()
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
     void MoveRight()
     {
 
-        if (targetLane < RightLane)
+        if (targetLane < RightLane && LaneMove == false)
         {
             PlayerRen.sprite = PlayerSp[2];
             targetLane++;
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour
 
     void MoveLeft()
     {
-        if (targetLane > LeftLane)
+        if (targetLane > LeftLane && LaneMove == false)
         {
             PlayerRen.sprite = PlayerSp[3];
             targetLane--;
@@ -155,6 +155,7 @@ public class PlayerController : MonoBehaviour
                 point = contact.point;
             }
 
+            // 衝突した座標が足だったらジャンプ
             if (point.y < transform.position.y - 0.7f)
             {
                 PlayerRen.sprite = PlayerSp[1];
@@ -186,6 +187,8 @@ public class PlayerController : MonoBehaviour
             {
                 point = contact.point;
             }
+
+            // 衝突した座標が足だったらジャンプ
             if (point.y < transform.position.y - 0.7f)
             {
                 PlayerRen.sprite = PlayerSp[1];
@@ -194,9 +197,11 @@ public class PlayerController : MonoBehaviour
 
                 //Playeranim.SetTrigger("JumpNomal");
 
-                PlayerRig.velocity = transform.up * 10.0f;
+                PlayerRig.velocity = transform.up * 9.0f;
 
                 gameObject.layer = 8;
+
+                Destroy(collision.gameObject);
 
                 StartCoroutine(LayerChange());
             }

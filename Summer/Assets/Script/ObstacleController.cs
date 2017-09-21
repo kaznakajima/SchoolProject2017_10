@@ -49,7 +49,7 @@ public class ObstacleController : MonoBehaviour
         switch (obstacle)
         {
             case obstacleType.Star:
-                Warning.transform.position = new Vector3(transform.position.x, _mainCamera.transform.position.y + 4.5f, transform.position.z);
+                Warning.transform.position = new Vector3(transform.position.x, _mainCamera.transform.position.y + 4.5f,-1);
                 Instantiate(Warning);
                 break;
         }

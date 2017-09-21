@@ -13,7 +13,7 @@ public class ObstacleMaster : MonoBehaviour
         // プレファブを同ポジションに生成
         GameObject ObstacleChip = (GameObject)Instantiate(
             ObstacleObj,
-            Vector3.zero,
+            new Vector3(0,0,-1),
             Quaternion.identity);
 
         // 一緒に削除されるように生成した足場を子に設定

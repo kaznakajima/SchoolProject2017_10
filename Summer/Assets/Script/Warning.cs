@@ -8,6 +8,7 @@ public class Warning : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        transform.parent = Camera.main.transform;
         Destroy(gameObject, 1.0f);
 	}
 	

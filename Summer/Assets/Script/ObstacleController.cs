@@ -43,25 +43,25 @@ public class ObstacleController : MonoBehaviour
         _mainCamera = Camera.main;
 
         // 初期位置
-        switch (obstacle)
-        {
+        //switch (obstacle)
+        //{
 
-            case obstacleType.Star:
-                transform.position = new Vector3(Random.Range(-2, 2), _mainCamera.transform.position.y + 5.5f, -1);
-                break;
-            case obstacleType.Leftbird:
-                transform.position = new Vector3(-3, Random.Range(_mainCamera.transform.position.y - 2, _mainCamera.transform.position.y + 2), -1);
-                break;
-            case obstacleType.LeftPlane:
-                transform.position = new Vector3(-3, Random.Range(_mainCamera.transform.position.y - 2, _mainCamera.transform.position.y + 2), -1);
-                break;
-            case obstacleType.Rightbird:
-                transform.position = new Vector3(3, Random.Range(_mainCamera.transform.position.y - 2, _mainCamera.transform.position.y + 2), -1);
-                break;
-            case obstacleType.RightPlane:
-                transform.position = new Vector3(3, Random.Range(_mainCamera.transform.position.y - 2, _mainCamera.transform.position.y + 2), -1);
-                break;
-        }
+        //    case obstacleType.Star:
+        //        transform.position = new Vector3(Random.Range(-2, 2), _mainCamera.transform.position.y + 5.5f, -1);
+        //        break;
+        //    case obstacleType.Leftbird:
+        //        transform.position = new Vector3(-3, Random.Range(_mainCamera.transform.position.y - 2, _mainCamera.transform.position.y + 2), -1);
+        //        break;
+        //    case obstacleType.LeftPlane:
+        //        transform.position = new Vector3(-3, Random.Range(_mainCamera.transform.position.y - 2, _mainCamera.transform.position.y + 2), -1);
+        //        break;
+        //    case obstacleType.Rightbird:
+        //        transform.position = new Vector3(3, Random.Range(_mainCamera.transform.position.y - 2, _mainCamera.transform.position.y + 2), -1);
+        //        break;
+        //    case obstacleType.RightPlane:
+        //        transform.position = new Vector3(3, Random.Range(_mainCamera.transform.position.y - 2, _mainCamera.transform.position.y + 2), -1);
+        //        break;
+        //}
     }
 
     // Update is called once per frame

@@ -34,18 +34,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     Sprite[] PlayerSp;
 
+    // スタート判定
+    public static bool gameStart;
     // 左右移動判定
     bool LaneMove;
     // 衝突判定
-    public static bool hit;
+    bool hit;
 
     // Use this for initialization
     void Start()
     {
-        LaneMove = true;
+        gameStart = false;
         PlayerRig.simulated = false;
         StartCoroutine(GameStart());
-        hit = true;
+        hit = false;
     }
 
     // 三秒たったらゲームスタート
@@ -53,9 +55,7 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(3.5f);
 
-        hit = false;
-
-        LaneMove = false;
+        gameStart = true;
 
         PlayerRig.simulated = true;
     }
@@ -64,12 +64,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // マウスクリックまたはタップを開始したとき
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && gameStart)
         {
             TouchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
         }
         // マウス、タップを離したとき
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && gameStart)
         {
             TouchEnd = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
 
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
     void MoveRight()
     {
 
-        if (targetLane < RightLane && LaneMove == false)
+        if (targetLane < RightLane)
         {
             PlayerRen.sprite = PlayerSp[2];
             targetLane++;
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour
 
     void MoveLeft()
     {
-        if (targetLane > LeftLane && LaneMove == false)
+        if (targetLane > LeftLane)
         {
             PlayerRen.sprite = PlayerSp[3];
             targetLane--;

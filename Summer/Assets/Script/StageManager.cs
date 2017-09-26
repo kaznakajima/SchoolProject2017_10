@@ -30,7 +30,7 @@ public class StageManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PlayerController.hit == true)
+        if (PlayerController.gameStart == false)
             return;
 
         // キャラクターが存在するなら処理を行う
@@ -56,15 +56,20 @@ public class StageManager : MonoBehaviour
         for (int i = currentTipIndex + 1; i <= toTipIndex; i++)
         {
             GameObject stageObject = GenerateStage(i);
-            GameObject obstacleObject = GenerateObstacle(i);
 
             // 生成したステージチップを管理リストに追加し
             generatedStageList.Add(stageObject);
+
+            GameObject obstacleObject = GenerateObstacle(i);
+
+            // 生成した障害物を管理リストに追加
             generatedObstacleList.Add(obstacleObject);
         }
 
         // ステージ保持上限内になるまで古いステージを削除
         while (generatedStageList.Count > preInstantiate + 2) DestroyOlderStage();
+        // ステージ保持上限内になるまで古いステージを削除
+        while (generatedStageList.Count > preInstantiate + 2) DestroyOlderObstacle();
 
         currentTipIndex = toTipIndex;
     }
@@ -92,7 +97,7 @@ public class StageManager : MonoBehaviour
 
         GameObject obstacleObject = Instantiate(
             obstacleTips[nextObstacleTip],
-            new Vector3(0, tipIndex * StageTipSize, 0),
+            new Vector3(0, tipIndex * StageTipSize + 5, 0),
             Quaternion.identity);
 
         return obstacleObject;

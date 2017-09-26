@@ -43,6 +43,7 @@ public class ObstacleController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+
         _mainCamera = Camera.main;
 
         // 障害物の種類によって警告の表示する位置を決める
@@ -53,7 +54,6 @@ public class ObstacleController : MonoBehaviour
                 Instantiate(Warning);
                 break;
         }
-        
 
         // 初期位置
         //switch (obstacle)
@@ -86,7 +86,7 @@ public class ObstacleController : MonoBehaviour
             case obstacleType.Leftbird:
                 ObstaclePos.x = 1;
                 transform.position += ObstaclePos * speed * Time.deltaTime;
-                if (transform.position.x > getCameraRange_Right().x + 0.25f)
+                if (transform.position.x > getCameraRange().x + 0.25f)
                 {
                     Destroy(gameObject);
                 }
@@ -94,7 +94,7 @@ public class ObstacleController : MonoBehaviour
             case obstacleType.Rightbird:
                 ObstaclePos.x = -1;
                 transform.position += ObstaclePos * speed * Time.deltaTime;
-                if (transform.position.x < getCameraRange_Left().x - 0.25f)
+                if (transform.position.x < -getCameraRange().x - 0.25f)
                 {
                     Destroy(gameObject);
                 }
@@ -103,7 +103,7 @@ public class ObstacleController : MonoBehaviour
                 transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
                 ObstaclePos.x = 1;
                 transform.position += ObstaclePos * speed * Time.deltaTime;
-                if (transform.position.x > getCameraRange_Right().x + 1.0f)
+                if (transform.position.x > getCameraRange().x + 1.0f)
                 {
                     Destroy(gameObject);
                 }
@@ -111,7 +111,7 @@ public class ObstacleController : MonoBehaviour
             case obstacleType.RightPlane:
                 ObstaclePos.x = -1;
                 transform.position += ObstaclePos * speed * Time.deltaTime;
-                if (transform.position.x < getCameraRange_Left().x - 1.0f)
+                if (transform.position.x < -getCameraRange().x - 1.0f)
                 {
                     Destroy(gameObject);
                 }
@@ -119,7 +119,7 @@ public class ObstacleController : MonoBehaviour
             case obstacleType.Star:
                 ObstaclePos.y = -2;
                 transform.position += ObstaclePos * speed * Time.deltaTime;
-                if (transform.position.y < getCameraRange_Right().y - 1.0f)
+                if (transform.position.y < getCameraRange().y - 1.0f)
                     Destroy(gameObject);
                 break;
         }
@@ -132,23 +132,14 @@ public class ObstacleController : MonoBehaviour
         Destroy(gameObject, 0.25f);
     }
 
-    private Vector3 getCameraRange_Left()
+    /// <summary>
+    /// カメラ範囲の取得
+    /// </summary>
+    /// <returns></returns>
+    private Vector3 getCameraRange()
     {
-        //_mainCamera = Camera.main;
-        Vector3 LeftRange = _mainCamera.ScreenToWorldPoint(Vector3.zero);
-        // 上下反転させる
-        LeftRange.Scale(new Vector3(1f, -1f, 1f));
-        LeftRange.z = 0;
-        return LeftRange;
-    }
-
-    private Vector3 getCameraRange_Right()
-    {
-        //_mainCamera = Camera.main;
-        Vector3 RightRange = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0.0f));
-        // 上下反転させる
-        RightRange.Scale(new Vector3(1f, -1f, 1f));
-        RightRange.z = 0;
-        return RightRange;
+        Vector3 CameraRange = _mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0));
+        CameraRange.z = 0;
+        return CameraRange;
     }
 }

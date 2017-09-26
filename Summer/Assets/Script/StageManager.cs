@@ -8,6 +8,8 @@ public class StageManager : MonoBehaviour
     const int StageTipSize = 10;
 
     int currentTipIndex;
+    //次に生成するステージの番号
+    int nextStageTip;
 
     public Transform character;
     public GameObject[] stageTips;
@@ -67,9 +69,10 @@ public class StageManager : MonoBehaviour
         currentTipIndex = toTipIndex;
     }
 
+    // ステージチップの選択(ランダム)
     GameObject GenerateStage(int tipIndex)
     {
-        int nextStageTip = Random.Range(0, stageTips.Length);
+        nextStageTip = Random.Range(0, stageTips.Length);
 
         GameObject stageObject = Instantiate(
             stageTips[nextStageTip],
@@ -82,9 +85,10 @@ public class StageManager : MonoBehaviour
         return stageObject;
     }
 
+    // ステージチップに対応した障害物の生成
     GameObject GenerateObstacle(int tipIndex)
     {
-        int nextObstacleTip = Random.Range(0, obstacleTips.Length);
+        int nextObstacleTip = nextStageTip;
 
         GameObject obstacleObject = Instantiate(
             obstacleTips[nextObstacleTip],

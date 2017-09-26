@@ -8,6 +8,9 @@ public class ObstacleController : MonoBehaviour
     [SerializeField]
     obstacleType obstacle;
 
+    // StageManagerの参照
+    StageManager _stageManager;
+
     // カメラの参照
     Camera _mainCamera;
 
@@ -24,6 +27,7 @@ public class ObstacleController : MonoBehaviour
     // アラート警告
     [SerializeField]
     GameObject Warning;
+    bool warning;
 
 
     // 障害物の種類
@@ -46,35 +50,7 @@ public class ObstacleController : MonoBehaviour
 
         _mainCamera = Camera.main;
 
-        // 障害物の種類によって警告の表示する位置を決める
-        switch (obstacle)
-        {
-            case obstacleType.Star:
-                Warning.transform.position = new Vector3(transform.position.x, _mainCamera.transform.position.y + 4.5f,-1);
-                Instantiate(Warning);
-                break;
-        }
-
-        // 初期位置
-        //switch (obstacle)
-        //{
-
-        //    case obstacleType.Star:
-        //        transform.position = new Vector3(Random.Range(-2, 2), _mainCamera.transform.position.y + 5.5f, -1);
-        //        break;
-        //    case obstacleType.Leftbird:
-        //        transform.position = new Vector3(-3, Random.Range(_mainCamera.transform.position.y - 2, _mainCamera.transform.position.y + 2), -1);
-        //        break;
-        //    case obstacleType.LeftPlane:
-        //        transform.position = new Vector3(-3, Random.Range(_mainCamera.transform.position.y - 2, _mainCamera.transform.position.y + 2), -1);
-        //        break;
-        //    case obstacleType.Rightbird:
-        //        transform.position = new Vector3(3, Random.Range(_mainCamera.transform.position.y - 2, _mainCamera.transform.position.y + 2), -1);
-        //        break;
-        //    case obstacleType.RightPlane:
-        //        transform.position = new Vector3(3, Random.Range(_mainCamera.transform.position.y - 2, _mainCamera.transform.position.y + 2), -1);
-        //        break;
-        //}
+        warning = false;
     }
 
     // Update is called once per frame
@@ -119,6 +95,13 @@ public class ObstacleController : MonoBehaviour
             case obstacleType.Star:
                 ObstaclePos.y = -2;
                 transform.position += ObstaclePos * speed * Time.deltaTime;
+                Vector3 distance = transform.position - _mainCamera.transform.position;
+                if (distance.y < 10.0f && !warning)
+                {
+                    Warning.transform.position = new Vector3(transform.position.x, _mainCamera.transform.position.y + 4.0f, -1);
+                    Instantiate(Warning);
+                    warning = true;
+                }
                 if (transform.position.y < getCameraRange().y - 1.0f)
                     Destroy(gameObject);
                 break;

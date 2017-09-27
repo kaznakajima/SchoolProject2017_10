@@ -189,7 +189,7 @@ public class PlayerController : MonoBehaviour
             }
 
             // 衝突した座標が足だったらジャンプ
-            if (point.y < transform.position.y - 0.7f)
+            if (point.y < transform.position.y - 0.75f)
             {
                 PlayerRen.sprite = PlayerSp[1];
 

@@ -5,14 +5,24 @@ using UnityEngine;
 public class ObstacleMaster : MonoBehaviour
 {
     // 障害物
-    public GameObject ObstacleObj;
+    public GameObject[] ObstacleObj;
+
+    // 障害物の呼び出し用
+    int Objnum = 0;
 
 	// Use this for initialization
 	void Start ()
     {
+        Camera _mainCamera = Camera.main;
+
+        if (_mainCamera.transform.position.y >= 0)
+            Objnum = 0;
+        if (_mainCamera.transform.position.y >= 100)
+            Objnum = 1;
+
         // プレファブを同ポジションに生成
         GameObject ObstacleChip = (GameObject)Instantiate(
-            ObstacleObj,
+            ObstacleObj[Objnum],
             new Vector3(0,0,-1),
             Quaternion.identity);
 
@@ -29,7 +39,7 @@ public class ObstacleMaster : MonoBehaviour
         // プレファブのアイコン表示
         if (ObstacleObj != null)
         {
-            Gizmos.DrawIcon(transform.position, ObstacleObj.name, true);
+            Gizmos.DrawIcon(transform.position, ObstacleObj[Objnum].name, true);
         }
     }
 }

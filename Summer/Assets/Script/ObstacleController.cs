@@ -29,6 +29,8 @@ public class ObstacleController : MonoBehaviour
     // 障害物の種類
     public enum obstacleType
     {
+        // 足場
+        Cloud,
         // 鳥
         Leftbird,
         Rightbird,
@@ -48,6 +50,15 @@ public class ObstacleController : MonoBehaviour
         // 障害物の種類によって警告の表示する位置を決める
         switch (obstacle)
         {
+            case obstacleType.Cloud:
+                if(_mainCamera.transform.position.y >= 100)
+                {
+                    if (transform.position.x > _mainCamera.transform.position.x)
+                        ObstaclePos.x = -1;
+                    if (transform.position.x < _mainCamera.transform.position.x)
+                        ObstaclePos.x = 1;
+                }
+                break;
             case obstacleType.Star:
                 Warning.transform.position = new Vector3(transform.position.x, _mainCamera.transform.position.y + 4.5f, transform.position.z);
                 Instantiate(Warning);
@@ -83,6 +94,14 @@ public class ObstacleController : MonoBehaviour
 
         switch (obstacle)
         {
+
+            case obstacleType.Cloud:
+                if (transform.position.x >= getCameraRange_Right().x)
+                    ObstaclePos.x = -1;
+                else if (transform.position.x <= -getCameraRange_Right().x)
+                    ObstaclePos.x = 1;
+                transform.position += ObstaclePos * speed * Time.deltaTime;
+                break;
             case obstacleType.Leftbird:
                 ObstaclePos.x = 1;
                 transform.position += ObstaclePos * speed * Time.deltaTime;

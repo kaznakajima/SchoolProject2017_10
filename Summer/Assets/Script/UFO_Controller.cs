@@ -15,7 +15,7 @@ public class UFO_Controller : MonoBehaviour
     /// <summary>
     /// PlayerのObject
     /// </summary>
-    public GameObject player;
+    GameObject player;
 
     private Rigidbody2D rigidbody2d;
 
@@ -39,7 +39,7 @@ public class UFO_Controller : MonoBehaviour
     /// <summary>
     /// カメラのPosition
     /// </summary>
-    public Camera cameraPos;
+    Camera cameraPos;
 
 
     /// <summary>
@@ -63,6 +63,8 @@ public class UFO_Controller : MonoBehaviour
 
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+        cameraPos = Camera.main;
         PlayerSize = player.transform.localScale;
         playerSc = FindObjectOfType<PlayerController>();
     }
@@ -109,10 +111,10 @@ public class UFO_Controller : MonoBehaviour
                         rigidbody2d = hitObj.GetComponent<Rigidbody2D>();
                         rigidbody2d.gravityScale = 0;
 
-                        playerSc.enabled = false;
-
                         hitObj.gameObject.transform.position = Vector2.Lerp(hitObj.transform.position,
                                             transform.position, 0.00001f * Time.deltaTime);
+
+                        playerSc.enabled = false;
 
                         hitObj.transform.localScale -= new Vector3(0.01f, 0.01f, 0);
 
@@ -142,7 +144,7 @@ public class UFO_Controller : MonoBehaviour
 
             playerSc.enabled = true;
 
-            catchflag = false;
+           catchflag = false;
         }
 
 
@@ -150,8 +152,9 @@ public class UFO_Controller : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Obstacle")
+        if(collision.gameObject.tag == "Obstacle")
+        {
             Destroy(collision.gameObject);
+        }
     }
-
 }

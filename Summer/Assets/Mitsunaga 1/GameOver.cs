@@ -11,6 +11,7 @@ public class GameOver : MonoBehaviour
 
     public Image gameOverImage;
     public GameObject[] HakoAndButton;
+    public ScoreManager scoreMane;
 
     int addAlpha;
 
@@ -31,6 +32,12 @@ public class GameOver : MonoBehaviour
 
         if (player.transform.position.y < cameraVec.y)
         {
+            int score = (int)scoreMane.GetScore();
+            if (PlayerPrefs.GetInt("HighScore") < score)
+            {
+                PlayerPrefs.SetInt("HighScore", score);
+            }
+
             if(gameOverImage.color.a < 1)
             {
                 gameOverImage.color += new Color(0, 0, 0, addAlpha * Time.deltaTime);
@@ -50,5 +57,9 @@ public class GameOver : MonoBehaviour
     public void OnClickedRetryButton()
     {
         SceneManager.LoadScene("Proto");
+    }
+    public void OnClickedYameruButton()
+    {
+        SceneManager.LoadScene("TItleScene");
     }
 }

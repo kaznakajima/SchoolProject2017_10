@@ -18,6 +18,8 @@ public class ObstacleController : MonoBehaviour
     Vector3 ObstaclePos = Vector3.zero;
     // 障害物のスピード
     public float speed;
+    // 左右移動の判断
+    bool x_move;
 
     // 衝突エフェクト
     [SerializeField]
@@ -33,6 +35,10 @@ public class ObstacleController : MonoBehaviour
     // 障害物の種類
     public enum obstacleType
     {
+        // 無害
+        Nomal,
+        // 雲
+        Cloud,
         // 鳥
         Leftbird,
         Rightbird,
@@ -50,6 +56,16 @@ public class ObstacleController : MonoBehaviour
 
         _mainCamera = Camera.main;
 
+        switch (obstacle)
+        {
+            case obstacleType.Cloud:
+                if (transform.position.x <= 0)
+                    x_move = true;
+                else if (transform.position.x > 0)
+                    x_move = false;
+                break;
+        }
+
         warning = false;
     }
 
@@ -59,6 +75,12 @@ public class ObstacleController : MonoBehaviour
 
         switch (obstacle)
         {
+            case obstacleType.Cloud:
+                if(_mainCamera.transform.position.y >= 100)
+                {
+                    StageMove();
+                }
+                break;
             case obstacleType.Leftbird:
                 ObstaclePos.x = 1;
                 transform.position += ObstaclePos * speed * Time.deltaTime;
@@ -105,6 +127,25 @@ public class ObstacleController : MonoBehaviour
                 if (transform.position.y < getCameraRange().y - 1.0f)
                     Destroy(gameObject);
                 break;
+        }
+    }
+
+    /// <summary>
+    /// 足場の移動
+    /// </summary>
+    void StageMove()
+    {
+        if (x_move)
+        {
+            transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
+            if (transform.position.x >= 2)
+                x_move = false;
+        }
+        else
+        {
+            transform.position -= new Vector3(speed * Time.deltaTime, 0, 0);
+            if (transform.position.x <= -2)
+                x_move = true;
         }
     }
 

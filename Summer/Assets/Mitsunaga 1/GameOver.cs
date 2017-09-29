@@ -12,9 +12,13 @@ public class GameOver : MonoBehaviour
     public ScoreManager scoreMane;
 
     public Animator CanvasAnim;
+    public FadeManager fadeManager;
+
+    bool buttonFlg;
 
     void Start()
     {
+        buttonFlg = true;
         CanvasAnim.SetBool("GameStart", true);
     }
 
@@ -22,6 +26,7 @@ public class GameOver : MonoBehaviour
     {
         Vector3 cameraVec = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0));
 
+        // プレイヤーがカメラの下端に到達したら、ゲームオーバーフラグを立てる
         if (player.transform.position.y < cameraVec.y)
         {
             int score = (int)scoreMane.GetScore();
@@ -35,10 +40,20 @@ public class GameOver : MonoBehaviour
 
     public void OnClickedRetryButton()
     {
-        SceneManager.LoadScene("Proto");
+        if (buttonFlg)
+        {
+            fadeManager.nextSceneName = "Proto";
+            fadeManager.isFade = true;
+            buttonFlg = false;
+        }
     }
     public void OnClickedYameruButton()
     {
-        SceneManager.LoadScene("TItleScene");
+        if (buttonFlg)
+        {
+            fadeManager.nextSceneName = "TitleScene";
+            fadeManager.isFade = true;
+            buttonFlg = false;
+        }
     }
 }

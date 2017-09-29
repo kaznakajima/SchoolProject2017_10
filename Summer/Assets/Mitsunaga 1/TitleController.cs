@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class TitleController : MonoBehaviour
 {
+    public FadeManager fadeManager;
 
 	// Use this for initialization
 	void Start ()
@@ -23,6 +24,7 @@ public class TitleController : MonoBehaviour
 
     void TouchStart()
     {
-        SceneManager.LoadScene("Proto");
+        fadeManager.nextSceneName = "Proto";
+        fadeManager.isFade = true;
     }
 }

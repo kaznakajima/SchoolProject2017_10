@@ -25,12 +25,6 @@ public class UFO_Controller : MonoBehaviour
     /// </summary>
     Vector3 ufoPos = new Vector3(0,10,0);
 
-
-    /// <summary>
-    /// サイズ制限のためのヤツ
-    /// </summary>
-    Vector3 rangePos;
-
     Vector3 PlayerSize;
 
     public float speed;

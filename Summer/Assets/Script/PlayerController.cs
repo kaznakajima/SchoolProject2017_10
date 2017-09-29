@@ -147,7 +147,7 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Block")
+        if (collision.gameObject.tag == "Block" || collision.gameObject.tag == "UFO")
         {
             // 接触した障害物のスクリプトを参照する
             _obstacleController = collision.gameObject.GetComponent<ObstacleController>();

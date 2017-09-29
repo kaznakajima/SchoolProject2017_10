@@ -71,9 +71,7 @@ public class UFO_Controller : MonoBehaviour
 
         if (!playerhit)
         {
-            //Vector3 UfoPos = transform.position;
-            //UfoPos.y = Mathf.Cos(Time.deltaTime * 1) * 2.0f;
-            //transform.position = UfoPos;
+            
         }
         else
         {

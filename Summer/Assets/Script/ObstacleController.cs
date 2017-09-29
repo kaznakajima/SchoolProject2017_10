@@ -26,6 +26,8 @@ public class ObstacleController : MonoBehaviour
     SpriteRenderer ObstacleRen;
     [SerializeField]
     Sprite HitEffect;
+    [SerializeField]
+    GameObject Effect;
     // アラート警告
     [SerializeField]
     GameObject Warning;
@@ -127,7 +129,15 @@ public class ObstacleController : MonoBehaviour
                 if (transform.position.y < getCameraRange().y - 1.0f)
                     Destroy(gameObject);
                 break;
+            default:
+                break;
         }
+    }
+
+    public void EffectBorn()
+    {
+        Effect.transform.position = transform.position;
+        Instantiate(Effect);
     }
 
     /// <summary>

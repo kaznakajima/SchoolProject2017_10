@@ -149,6 +149,9 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Block")
         {
+            // 接触した障害物のスクリプトを参照する
+            _obstacleController = collision.gameObject.GetComponent<ObstacleController>();
+
             // 衝突した地点の座標を取得
             foreach (ContactPoint2D contact in collision.contacts)
             {
@@ -158,6 +161,8 @@ public class PlayerController : MonoBehaviour
             // 衝突した座標が足だったらジャンプ
             if (point.y < transform.position.y - 0.7f)
             {
+                _obstacleController.EffectBorn();
+
                 PlayerRen.sprite = PlayerSp[1];
 
                 LaneMove = false;
@@ -217,7 +222,7 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(0.7f);
 
-        gameObject.layer = 0;
+        gameObject.layer = 9;
 
         if (LaneMove) { yield break; }
 

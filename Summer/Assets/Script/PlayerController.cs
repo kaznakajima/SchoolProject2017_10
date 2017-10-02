@@ -220,7 +220,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator LayerChange()
     {
 
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.8f);
 
         gameObject.layer = 9;
 

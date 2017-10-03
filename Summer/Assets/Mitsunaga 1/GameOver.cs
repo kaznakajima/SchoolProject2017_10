@@ -17,7 +17,7 @@ public class GameOver : MonoBehaviour
     public AudioClip countDownClip;
     public AudioClip gameOverClip;
 
-    public AudioSource hakoAudioSource;
+    AudioSource buttonAudioSource;
 
     bool buttonFlg;
     bool gameOverFlg;
@@ -25,6 +25,8 @@ public class GameOver : MonoBehaviour
 
     void Start()
     {
+        // ボタン用のAudioSourceを取得
+        buttonAudioSource = GetComponent<AudioSource>();
         // カメラについたAudioSourceを取得して、カウントダウンを再生
         cameraAudioSource = mainCamera.GetComponent<AudioSource>();
         cameraAudioSource.PlayOneShot(countDownClip);
@@ -51,7 +53,7 @@ public class GameOver : MonoBehaviour
                 // BGMを止め、ちーんを再生
                 cameraAudioSource.loop = false;
                 cameraAudioSource.Stop();
-                hakoAudioSource.PlayOneShot(gameOverClip);
+                buttonAudioSource.PlayOneShot(gameOverClip);
                 // ハイスコアを更新していればハイスコアを記録
                 int score = (int)scoreMane.GetScore();
                 if (PlayerPrefs.GetInt("HighScore") < score)
@@ -71,7 +73,7 @@ public class GameOver : MonoBehaviour
     {
         if (buttonFlg)
         {
-            hakoAudioSource.Play();
+            buttonAudioSource.Play();
 
             fadeManager.nextSceneName = "Proto";
             fadeManager.isFade = true;
@@ -82,7 +84,7 @@ public class GameOver : MonoBehaviour
     {
         if (buttonFlg)
         {
-            hakoAudioSource.Play();
+            buttonAudioSource.Play();
 
             fadeManager.nextSceneName = "TitleScene";
             fadeManager.isFade = true;

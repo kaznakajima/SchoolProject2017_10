@@ -40,7 +40,6 @@ public class UFOController : MonoBehaviour
     int targetLane;
 
     // ---プレイヤーのサイズ---
-    GameObject Player;
     Vector3 PlayerSize;
     // 接触したオブジェクト
     GameObject hitObj;
@@ -50,18 +49,18 @@ public class UFOController : MonoBehaviour
     Vector3 hitPoint;
     // プレイヤーが接触した判定
     bool playerHit;
+    // プレイヤーコントローラーの参照
+    PlayerController _playerController;
 
 	// Use this for initialization
 	void Start ()
     {
         ufoOrigin = transform.position;
 
-        //プレイヤーのサイズを取得
-        Player = GameObject.FindGameObjectWithTag("Player");
-        PlayerSize = Player.transform.localScale;
+        PlayerSize = new Vector3(0.3f,0.3f,1);
 
         // UFOが運んでくれる距離
-        maxRange = Random.Range(30, 50);
+        maxRange = Random.Range(35, 50);
 	}
 	
 	// Update is called once per frame
@@ -153,25 +152,27 @@ public class UFOController : MonoBehaviour
             //接触したオブジェクトを取得
             hitObj = collision.gameObject;
 
-            // 接触した地点の座標を取得
-            foreach (ContactPoint2D contact in collision.contacts)
-            {
-                hitPoint = contact.point;
-            }
+            //// 接触した地点の座標を取得
+            //foreach (ContactPoint2D contact in collision.contacts)
+            //{
+            //    hitPoint = contact.point;
+            //}
 
             // オブジェクトが下から接触した場合のみ処理を実行
-            if (hitPoint.y > hitObj.transform.position.y)
-            {
-                UFO_Action(hitObj);
-            }
-            else
-                return;
+            //if (hitPoint.y > hitObj.transform.position.y)
+            //{
+            //    UFO_Action(hitObj);
+            //}
+            //else
+            //    return;
+
+            UFO_Action();
         }
         if (collision.gameObject.tag == "Obstacle")
             Destroy(collision.gameObject);
     }
 
-    void UFO_Action(GameObject hitObj)
+    void UFO_Action()
     {
         // 現在のUFOの座標を取得
         defaultPos.y = transform.position.y;

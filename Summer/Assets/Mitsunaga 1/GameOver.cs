@@ -35,6 +35,8 @@ public class GameOver : MonoBehaviour
                 PlayerPrefs.SetInt("HighScore", score);
             }
             CanvasAnim.SetBool("GameOver", true);
+
+            player.layer = 12;
         }
 	}
 

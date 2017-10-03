@@ -68,10 +68,10 @@ public class StageManager : MonoBehaviour
 
         // 一定の確率でUFOを生成
         percent = Random.Range(0, 100);
-        if(percent >= 50)
+        if(percent >= 70 && GameObject.FindGameObjectWithTag("UFO") == null)
         {
             Instantiate(UFO,
-                new Vector3(0, toTipIndex * StageTipSize, 1),
+                new Vector3(0, toTipIndex * StageTipSize + 10, 1),
                 Quaternion.identity);
         }
 
@@ -133,7 +133,7 @@ public class StageManager : MonoBehaviour
 
         GameObject obstacleObject = Instantiate(
             obstacleTips[nextObstacleTip],
-            new Vector3(0, tipIndex * StageTipSize, 0),
+            new Vector3(0, tipIndex * StageTipSize + 1, 0),
             Quaternion.identity);
 
         return obstacleObject;

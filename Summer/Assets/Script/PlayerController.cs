@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
         hit = false;
     }
 
-    // 三秒たったらゲームスタート
+    // 3秒たったらゲームスタート
     IEnumerator GameStart()
     {
         yield return new WaitForSeconds(3.5f);
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
         if (!hit)
         {
             movePos = new Vector3(ratioX, transform.position.y, transform.position.z);
-            transform.position = Vector3.Lerp(transform.position, movePos, 3.0f * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, movePos, 4.0f * Time.deltaTime);
         }
     }
 
@@ -147,7 +147,7 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Block" || collision.gameObject.tag == "UFO")
+        if (collision.gameObject.tag == "Block")
         {
             // 接触した障害物のスクリプトを参照する
             _obstacleController = collision.gameObject.GetComponent<ObstacleController>();
@@ -215,8 +215,15 @@ public class PlayerController : MonoBehaviour
                 ObstacleHit();
             }
         }
+
+        if(collision.gameObject.tag == "UFO")
+        {
+            PlayerRen.sprite = PlayerSp[0];
+            targetLane = 0;
+        }
     }
 
+    // レイヤーの変更
     IEnumerator LayerChange()
     {
 

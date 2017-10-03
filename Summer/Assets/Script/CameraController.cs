@@ -30,10 +30,12 @@ public class CameraController : MonoBehaviour
     {
         Vector3 newPosition = _Camera.transform.position;
 
+        // プレイヤーが上に行き過ぎないようにする
         if (_Player.transform.position.y > newPosition.y)
             // カメラ移動
             newPosition.y = _Player.transform.position.y + offset.y;
 
+        // 移動実行
         _Camera.transform.position = Vector3.Lerp(_Camera.transform.position, newPosition, 10.0f * Time.deltaTime);
 	}
 }

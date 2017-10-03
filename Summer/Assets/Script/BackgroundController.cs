@@ -8,7 +8,7 @@ public class BackgroundController : MonoBehaviour
     public SpriteRenderer background;
 
     // 背景画像の配列
-    public Sprite[] backgrounds;
+    public Sprite[] sp_backgrounds;
 
     // スコアの参照
     Camera _mainCamera;
@@ -19,15 +19,23 @@ public class BackgroundController : MonoBehaviour
         _mainCamera = Camera.main;
         if(_mainCamera.transform.position.y >= 0)
         {
-            background.sprite = backgrounds[0];
+            background.sprite = sp_backgrounds[0];
         }
         if(_mainCamera.transform.position.y >= 90)
         {
-            background.sprite = backgrounds[1];
+            background.sprite = sp_backgrounds[1];
         }
         if(_mainCamera.transform.position.y > 100)
+        { 
+            background.sprite = sp_backgrounds[2];
+        }
+        if(_mainCamera.transform.position.y >= 290)
         {
-            background.sprite = backgrounds[2];
+            background.sprite = sp_backgrounds[3];
+        }
+        if(_mainCamera.transform.position.y >= 300)
+        {
+            background.sprite = sp_backgrounds[4];
         }
 	}
 	

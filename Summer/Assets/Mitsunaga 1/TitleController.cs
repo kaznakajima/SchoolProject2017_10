@@ -7,11 +7,14 @@ public class TitleController : MonoBehaviour
 {
     public FadeManager fadeManager;
 
+    AudioSource titleAudioSource;
+
 	// Use this for initialization
 	void Start ()
     {
-		
+        titleAudioSource = GetComponent<AudioSource>();
 	}
+
 	
 	// Update is called once per frame
 	void Update ()
@@ -24,6 +27,7 @@ public class TitleController : MonoBehaviour
 
     void TouchStart()
     {
+        titleAudioSource.Play();
         fadeManager.nextSceneName = "Proto";
         fadeManager.isFade = true;
     }

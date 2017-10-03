@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class UFOController : MonoBehaviour
 {
+    // ---UFOの生成---
+    [SerializeField]
+    GameObject UFO;
+    float UFO_Interval;
+
     // ---UFOの座標---
     // UFOの原点
     Vector3 ufoOrigin;
-    // UFOの上下移動
-    Vector3 ufoPos;
+    // UFOの上昇
+    Vector3 ufoPos = new Vector3(0,10,0);
     // UFOの左右移動
     Vector3 ufoMove;
+
+    // ---UFOがプレイヤーを運ぶ距離---
+    public int maxRange;
+    Vector3 defaultPos;
 
     // ---UFOの移動---
     // 移動スピード
@@ -45,16 +54,21 @@ public class UFOController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        ufoOrigin = transform.position;
+
         //プレイヤーのサイズを取得
         Player = GameObject.FindGameObjectWithTag("Player");
         PlayerSize = Player.transform.localScale;
+
+        // UFOが運んでくれる距離
+        maxRange = Random.Range(30, 50);
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
         // 通常の移動
-        if (!playerHit)
+        if (!playerHit || hitObj.transform.parent == null)
         {
             // UFOが画面外に行かないように制限
             if (transform.position.x >= 2)
@@ -64,16 +78,16 @@ public class UFOController : MonoBehaviour
 
             // 左右移動
             if (MoveX)
-                ufoPos.x = transform.position.x + Mathf.Sin(Time.deltaTime * speed) * 0.5f;
+                ufoOrigin.x = transform.position.x + Mathf.Sin(Time.deltaTime * speed) * 0.5f;
             else
-                ufoPos.x = transform.position.x - Mathf.Sin(Time.deltaTime * speed) * 0.5f;
+                ufoOrigin.x = transform.position.x - Mathf.Sin(Time.deltaTime * speed) * 0.5f;
 
             // 上下移動
-            ufoPos.y = Mathf.Cos(Time.time * speed) * 0.04f;
+            ufoOrigin.y += Mathf.Cos(Time.time * speed) * 0.04f;
             // 移動実行
-            transform.position = ufoPos;
+            transform.position = ufoOrigin;
         }
-        else
+        else if(playerHit)
         {
             // マウスクリックまたはタップを開始したとき
             if (Input.GetMouseButtonDown(0))
@@ -103,7 +117,16 @@ public class UFOController : MonoBehaviour
             // 移動実行
             ufoMove = new Vector3(ratioX, transform.position.y, transform.position.z);
             transform.position = Vector3.Lerp(transform.position, ufoMove, 3.0f * Time.deltaTime);
-            transform.position = ufoPos;
+            transform.position += ufoPos * speed * Time.deltaTime;
+
+            // 一定距離運んだ場合
+            if(transform.position.y >= defaultPos.y + maxRange)
+            {
+                if (hitObj.transform.parent != null)
+                    UFO_Release();
+                else
+                    return;
+            }
         }
 	}
 
@@ -143,22 +166,46 @@ public class UFOController : MonoBehaviour
             }
             else
                 return;
-            
         }
+        if (collision.gameObject.tag == "Obstacle")
+            Destroy(collision.gameObject);
     }
 
     void UFO_Action(GameObject hitObj)
     {
+        // 現在のUFOの座標を取得
+        defaultPos.y = transform.position.y;
+
         hitObj.transform.parent = transform;
+
+        hitObj.layer = 8;
 
         // hitObjを自身の位置まで移動しつつサイズを小さくしていく
         hitObj.transform.position = Vector3.Lerp(hitObj.transform.position, transform.position, 1.0f * Time.deltaTime);
-        hitObj.transform.localScale = Vector3.Lerp(PlayerSize, Vector3.zero, 1.0f * Time.deltaTime);
+        hitObj.transform.localScale = Vector3.zero;
 
         // hitObjのRigidbodyを取得し重力を無視する
         hitObjRig = hitObj.GetComponent<Rigidbody2D>();
-        hitObjRig.gravityScale = 0;
+        hitObjRig.simulated = false;
+        //hitObjRig.gravityScale = 0;
 
         playerHit = true;
+    }
+
+    // プレイヤーの解放
+    void UFO_Release()
+    {
+        hitObj.transform.parent = null;
+
+        hitObj.layer = 0;
+
+        // hitObjのRigidbodyを取得し重力を戻す
+        hitObjRig = hitObj.GetComponent<Rigidbody2D>();
+        hitObjRig.simulated = true;
+        //hitObjRig.gravityScale = 1;
+
+        hitObj.transform.localScale = PlayerSize;
+
+        playerHit = false;
     }
 }

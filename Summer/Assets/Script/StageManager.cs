@@ -17,6 +17,9 @@ public class StageManager : MonoBehaviour
     public GameObject[] stageTips;
     // 障害物の配列
     public GameObject[] obstacleTips;
+    // UFO
+    float percent;
+    public GameObject UFO;
     public int startTipIndex;
     public int bornObstacleIndex;
     public int preInstantiate;
@@ -62,6 +65,15 @@ public class StageManager : MonoBehaviour
     void UpdateStage(int toTipIndex)
     {
         if (toTipIndex <= currentTipIndex) return;
+
+        // 一定の確率でUFOを生成
+        percent = Random.Range(0, 100);
+        if(percent >= 50)
+        {
+            Instantiate(UFO,
+                new Vector3(0, toTipIndex * StageTipSize, 1),
+                Quaternion.identity);
+        }
 
         // 指定のステージチップまでを作成
         for (int i = currentTipIndex + 1; i <= toTipIndex; i++)

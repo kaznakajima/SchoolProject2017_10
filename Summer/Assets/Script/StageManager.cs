@@ -68,6 +68,7 @@ public class StageManager : MonoBehaviour
 
         // 一定の確率でUFOを生成
         percent = Random.Range(0, 100);
+        // シーン上にUFOが1機もないなら生成
         if(percent >= 70 && GameObject.FindGameObjectWithTag("UFO") == null)
         {
             Instantiate(UFO,

@@ -97,7 +97,7 @@ public class GameOver : MonoBehaviour
     public void PlayBGM()
     {
         // 若干音量を下げて、BGMを再生開始
-        cameraAudioSource.volume = 0.5f;
+        cameraAudioSource.volume = 0.3f;
         cameraAudioSource.Play();
     }
 }

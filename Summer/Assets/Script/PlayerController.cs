@@ -9,6 +9,10 @@ public class PlayerController : MonoBehaviour
     // 衝突したオブジェクトのBoxCollider2D
     public CapsuleCollider2D PlayerCollision;
 
+    // プレイヤーのAudioSource
+    public AudioSource _audio;
+    public AudioClip[] _audioClip;
+
     // 移動先の位置
     Vector3 movePos;
     // 接触した部分
@@ -125,6 +129,8 @@ public class PlayerController : MonoBehaviour
         PlayerRen.sprite = PlayerSp[4];
         _obstacleController.HitAction();
 
+        _audio.PlayOneShot(_audioClip[1]);
+
         if (point.x > transform.position.x)
         {
             PlayerRig.simulated = true;
@@ -171,6 +177,8 @@ public class PlayerController : MonoBehaviour
 
                 PlayerRig.velocity = transform.up * 7.0f;
 
+                _audio.PlayOneShot(_audioClip[0]);
+
                 gameObject.layer = 8;
 
                 Destroy(collision.gameObject);
@@ -203,6 +211,8 @@ public class PlayerController : MonoBehaviour
                 //Playeranim.SetTrigger("JumpNomal");
 
                 PlayerRig.velocity = transform.up * 9.0f;
+
+                _audio.PlayOneShot(_audioClip[0]);
 
                 gameObject.layer = 8;
 

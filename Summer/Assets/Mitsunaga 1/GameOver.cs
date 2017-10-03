@@ -14,36 +14,69 @@ public class GameOver : MonoBehaviour
     public Animator CanvasAnim;
     public FadeManager fadeManager;
 
+    public AudioClip countDownClip;
+    public AudioClip gameOverClip;
+
+    AudioSource buttonAudioSource;
+
     bool buttonFlg;
+    bool gameOverFlg;
+    AudioSource cameraAudioSource;
 
     void Start()
     {
-        buttonFlg = true;
+        // ボタン用のAudioSourceを取得
+        buttonAudioSource = GetComponent<AudioSource>();
+        // カメラについたAudioSourceを取得して、カウントダウンを再生
+        cameraAudioSource = mainCamera.GetComponent<AudioSource>();
+        cameraAudioSource.PlayOneShot(countDownClip);
+        // カウントダウンの終了時間に合わせてPlayBGMを実行
+        Invoke("PlayBGM", 4.0f);
+        // ゲームスタートアニメを再生
         CanvasAnim.SetBool("GameStart", true);
+
+        gameOverFlg = true;
+        buttonFlg = true;
+
+
     }
 
-	void Update ()
+    void Update()
     {
         Vector3 cameraVec = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0));
 
         // プレイヤーがカメラの下端に到達したら、ゲームオーバーフラグを立てる
         if (player.transform.position.y < cameraVec.y)
         {
-            int score = (int)scoreMane.GetScore();
-            if (PlayerPrefs.GetInt("HighScore") < score)
+            if (gameOverFlg)
             {
-                PlayerPrefs.SetInt("HighScore", score);
-            }
-            CanvasAnim.SetBool("GameOver", true);
+                // BGMを止め、ちーんを再生
+                cameraAudioSource.loop = false;
+                cameraAudioSource.Stop();
+                buttonAudioSource.PlayOneShot(gameOverClip);
+                // ハイスコアを更新していればハイスコアを記録
+                int score = (int)scoreMane.GetScore();
+                if (PlayerPrefs.GetInt("HighScore") < score)
+                {
+                    PlayerPrefs.SetInt("HighScore", score);
+                }
+                // ゲームオーバーアニメを再生
+                CanvasAnim.SetBool("GameOver", true);
 
-            player.layer = 12;
+                player.layer = 12;
+
+                gameOverFlg = false;
+            }
+
         }
-	}
+    }
 
     public void OnClickedRetryButton()
     {
         if (buttonFlg)
         {
+            buttonAudioSource.Play();
+
             fadeManager.nextSceneName = "Proto";
             fadeManager.isFade = true;
             buttonFlg = false;
@@ -53,9 +86,18 @@ public class GameOver : MonoBehaviour
     {
         if (buttonFlg)
         {
+            buttonAudioSource.Play();
+
             fadeManager.nextSceneName = "TitleScene";
             fadeManager.isFade = true;
             buttonFlg = false;
         }
+    }
+
+    public void PlayBGM()
+    {
+        // 若干音量を下げて、BGMを再生開始
+        cameraAudioSource.volume = 0.5f;
+        cameraAudioSource.Play();
     }
 }

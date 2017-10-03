@@ -24,7 +24,6 @@ public class TitleController : MonoBehaviour
             TouchStart();
         }
 	}
-
     void TouchStart()
     {
         titleAudioSource.Play();

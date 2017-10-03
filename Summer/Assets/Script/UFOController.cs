@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class UFOController : MonoBehaviour
 {
+    // ---UFOの生成---
+    [SerializeField]
+    GameObject UFO;
+    float UFO_Interval;
+
     // ---UFOの座標---
     // UFOの原点
     Vector3 ufoOrigin;
@@ -50,10 +55,12 @@ public class UFOController : MonoBehaviour
 	void Start ()
     {
         ufoOrigin = transform.position;
+
         //プレイヤーのサイズを取得
         Player = GameObject.FindGameObjectWithTag("Player");
         PlayerSize = Player.transform.localScale;
 
+        // UFOが運んでくれる距離
         maxRange = Random.Range(30, 50);
 	}
 	

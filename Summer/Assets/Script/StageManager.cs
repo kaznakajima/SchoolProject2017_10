@@ -20,6 +20,7 @@ public class StageManager : MonoBehaviour
     // UFO
     float percent;
     public GameObject UFO;
+
     public int startTipIndex;
     public int bornObstacleIndex;
     public int preInstantiate;
@@ -134,7 +135,7 @@ public class StageManager : MonoBehaviour
 
         GameObject obstacleObject = Instantiate(
             obstacleTips[nextObstacleTip],
-            new Vector3(0, tipIndex * StageTipSize + 1, 0),
+            new Vector3(0, tipIndex * StageTipSize, 0),
             Quaternion.identity);
 
         return obstacleObject;

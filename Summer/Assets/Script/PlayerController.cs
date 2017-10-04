@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     float TouchEnd;   // 指を放した座標
 
     // プレイヤーが通る道
+    float ratioX;
     const int RightLane = 1;
     const int LeftLane = -1;
     const float LaneWidth = 2.0f;
@@ -90,7 +91,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // 昇るレーンを変更
-        float ratioX = targetLane * LaneWidth;
+        ratioX = targetLane * LaneWidth;
 
         // 移動実行
         if (!hit)
@@ -169,7 +170,22 @@ public class PlayerController : MonoBehaviour
             {
                 _obstacleController.EffectBorn();
 
-                PlayerRen.sprite = PlayerSp[1];
+                switch (targetLane)
+                {
+                    case 0:
+                        if (transform.position.x >= ratioX - 0.5f || transform.position.x <= ratioX + 0.5f)
+                            PlayerRen.sprite = PlayerSp[1];
+                        break;
+                    case 1:
+                        if (transform.position.x >= ratioX -0.5f)
+                            PlayerRen.sprite = PlayerSp[1];
+                        break;
+                    case -1:
+                        if(transform.position.x <= ratioX + 0.5f)
+                            PlayerRen.sprite = PlayerSp[1];
+                        break;
+                }
+                    
 
                 LaneMove = false;
 
@@ -204,7 +220,8 @@ public class PlayerController : MonoBehaviour
             // 衝突した座標が足だったらジャンプ
             if (point.y < transform.position.y - 0.75f)
             {
-                PlayerRen.sprite = PlayerSp[1];
+                if (LaneMove == true && transform.position.x >= ratioX)
+                    PlayerRen.sprite = PlayerSp[1];
 
                 LaneMove = false;
 

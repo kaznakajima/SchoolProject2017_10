@@ -39,6 +39,9 @@ public class UFOController : MonoBehaviour
     // 昇る道
     int targetLane;
 
+    // AudioSourceの参照
+    public AudioSource _audio;
+
     // ---プレイヤーのサイズ---
     Vector3 PlayerSize;
     // 接触したオブジェクト
@@ -48,7 +51,9 @@ public class UFOController : MonoBehaviour
     // 接触した座標
     Vector3 hitPoint;
     // プレイヤーが接触した判定
-    bool playerHit;
+    public static bool playerHit;
+    // プレイヤーが離れた判定
+    bool playerLost;
     // プレイヤーコントローラーの参照
     PlayerController _playerController;
 
@@ -59,15 +64,17 @@ public class UFOController : MonoBehaviour
 
         PlayerSize = new Vector3(0.3f,0.3f,1);
 
+        playerLost = false;
+
         // UFOが運んでくれる距離
         maxRange = Random.Range(35, 50);
-	}
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
         // 通常の移動
-        if (!playerHit || hitObj.transform.parent == null)
+        if (!playerHit && playerLost == false)
         {
             // UFOが画面外に行かないように制限
             if (transform.position.x >= 2)
@@ -118,6 +125,13 @@ public class UFOController : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, ufoMove, 3.0f * Time.deltaTime);
             transform.position += ufoPos * speed * Time.deltaTime;
 
+            // 障害物の削除
+            GameObject[] Obstacle = GameObject.FindGameObjectsWithTag("Obstacle");
+            for(int i = 0;i < Obstacle.Length; i++)
+            {
+                Destroy(Obstacle[i]);
+            }
+
             // 一定距離運んだ場合
             if(transform.position.y >= defaultPos.y + maxRange)
             {
@@ -126,6 +140,16 @@ public class UFOController : MonoBehaviour
                 else
                     return;
             }
+        }
+        else if(playerLost == true)
+        {
+            transform.position += ufoPos * speed * Time.deltaTime;
+
+            // カメラ範囲から消えたら削除
+            Camera _mainCamera = Camera.main;
+            Vector3 CameraRange = _mainCamera.ViewportToWorldPoint(new Vector3(0,0,0));
+            if (transform.position.y > CameraRange.y + 11)
+                Destroy(gameObject);
         }
 	}
 
@@ -190,6 +214,8 @@ public class UFOController : MonoBehaviour
         hitObjRig.simulated = false;
         //hitObjRig.gravityScale = 0;
 
+        _audio.Play();
+
         playerHit = true;
     }
 
@@ -208,5 +234,6 @@ public class UFOController : MonoBehaviour
         hitObj.transform.localScale = PlayerSize;
 
         playerHit = false;
+        playerLost = true;
     }
 }
